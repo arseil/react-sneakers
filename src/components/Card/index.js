@@ -1,7 +1,9 @@
+import cardStyles from './Card.module.scss';
+
 export function Card({ title, price, imageUrl, onFavorite, onPlus, isFavorite }) {
   return (
-    <div className="card">
-      <div className="favorite">
+    <div className={cardStyles.card}>
+      <div className={cardStyles.favorite}>
         <img
           onClick={onFavorite}
           src={isFavorite ? '/img/heart-liked.svg' : '/img/heart-unliked.svg'}
@@ -17,8 +19,8 @@ export function Card({ title, price, imageUrl, onFavorite, onPlus, isFavorite })
           <span>Цена:</span>
           <b>{price} руб.</b>
         </div>
-        <button className="button">
-          <img onClick={onPlus} src="/img/plus.svg" alt="plus" width={11} height={11} />
+        <button className="button" onClick={onPlus}>
+          <img src="/img/plus.svg" alt="plus" width={11} height={11} />
         </button>
       </div>
     </div>
