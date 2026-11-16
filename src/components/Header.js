@@ -1,4 +1,4 @@
-export function Header({ onCartClick }) {
+export function Header({ onCartClick, total }) {
   return (
     <header className="d-flex justify-between align-center p-40">
       <div className="d-flex align-center">
@@ -11,7 +11,7 @@ export function Header({ onCartClick }) {
       <ul className="d-flex align-center">
         <li className="mr-30 d-flex align-center cu-p" onClick={onCartClick}>
           <img src="/img/cart.svg" alt="cart" width={18} height={18} />
-          <span className="ml-10">1205 руб.</span>
+          <span className="ml-10">{total || '0.00'} руб.</span>
         </li>
         <li>
           <img src="/img/user.svg" alt="user" width={18} height={18} />

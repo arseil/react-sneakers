@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import cardStyles from './Card.module.scss';
 
-export function Card({ title, price, imageUrl, onAddToCart }) {
+export function Card({ title, price, imageUrl, id, onAddToCart }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const [isAdded, setIsAdded] = useState(false);
@@ -11,7 +11,7 @@ export function Card({ title, price, imageUrl, onAddToCart }) {
   };
 
   const onPlus = () => {
-    onAddToCart({ title, price, imageUrl });
+    onAddToCart({ title, price, imageUrl, id });
     setIsAdded(!isAdded);
   };
 

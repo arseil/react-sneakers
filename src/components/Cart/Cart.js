@@ -1,6 +1,15 @@
+import { useEffect } from 'react';
 import { CartItem } from './CartItem';
+import axios from 'axios';
 
-export function Cart({ onCartClick, cartItems }) {
+export function Cart({ onCartClick, cartItems, onRemoveItemCart, setCartItems, total }) {
+  const tax = (total * 0.05).toFixed(2);
+  useEffect(() => {
+    axios.get('https://6afb0955730c1d152f32f8ad.mockapi.io/api/v1/cart').then(res => {
+      setCartItems(res.data);
+    });
+  }, [setCartItems]);
+
   return (
     <div className="overlay">
       <div className="drawer">
@@ -17,13 +26,15 @@ export function Cart({ onCartClick, cartItems }) {
         </div>
         <div className="items">
           {cartItems.length > 0 ? (
-            cartItems.map((item, index) => {
+            cartItems.map(item => {
               return (
                 <CartItem
                   title={item.title}
                   price={item.price}
                   imageUrl={item.imageUrl}
-                  key={index}
+                  key={item.id}
+                  id={item.id}
+                  onRemoveItemCart={onRemoveItemCart}
                 />
               );
             })
@@ -36,12 +47,12 @@ export function Cart({ onCartClick, cartItems }) {
             <li>
               <span>Итого:</span>
               <div></div>
-              <b>21 498 руб.</b>
+              <b>{total || '0.00'} руб.</b>
             </li>
             <li>
               <span>Налог 5%:</span>
               <div></div>
-              <b>1 074 руб.</b>
+              <b>{tax} руб.</b>
             </li>
           </ul>
 
