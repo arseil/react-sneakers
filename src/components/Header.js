@@ -9,15 +9,8 @@ export function Header({ onCartClick }) {
         </div>
       </div>
       <ul className="d-flex align-center">
-        <li className="mr-30 d-flex align-center">
-          <img
-            style={{ cursor: 'pointer' }}
-            src="/img/cart.svg"
-            alt="cart"
-            width={18}
-            height={18}
-            onClick={onCartClick}
-          />
+        <li className="mr-30 d-flex align-center cu-p" onClick={onCartClick}>
+          <img src="/img/cart.svg" alt="cart" width={18} height={18} />
           <span className="ml-10">1205 руб.</span>
         </li>
         <li>
