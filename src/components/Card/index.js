@@ -1,6 +1,19 @@
+import { useState } from 'react';
 import cardStyles from './Card.module.scss';
 
-export function Card({ title, price, imageUrl, onFavorite, onPlus, isFavorite }) {
+export function Card({ title, price, imageUrl }) {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const [isAdded, setIsAdded] = useState(false);
+
+  const onFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
+  const onPlus = () => {
+    setIsAdded(!isAdded);
+  };
+
   return (
     <div className={cardStyles.card}>
       <div className={cardStyles.favorite}>
@@ -19,9 +32,14 @@ export function Card({ title, price, imageUrl, onFavorite, onPlus, isFavorite })
           <span>Цена:</span>
           <b>{price} руб.</b>
         </div>
-        <button className="button" onClick={onPlus}>
-          <img src="/img/plus.svg" alt="plus" width={11} height={11} />
-        </button>
+        <img
+          src={isAdded ? '/img/btn-checked.svg' : '/img/btn-plus.svg'}
+          alt="plus"
+          width={32}
+          height={32}
+          onClick={onPlus}
+          className={cardStyles.plus}
+        />
       </div>
     </div>
   );

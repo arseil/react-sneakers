@@ -1,6 +1,6 @@
-export function Drawer() {
+export function Drawer({ isCartOpen, onCartClick }) {
   return (
-    <div style={{ display: 'none' }} className="overlay">
+    <div style={{ display: isCartOpen ? 'flex' : 'none' }} className="overlay">
       <div className="drawer">
         <div className="d-flex justify-between align-center mb-30">
           <h2>Корзина</h2>
@@ -10,6 +10,7 @@ export function Drawer() {
             width={32}
             height={32}
             className="removeBtn"
+            onClick={onCartClick}
           />
         </div>
         <div className="items">
