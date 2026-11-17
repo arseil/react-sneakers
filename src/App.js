@@ -1,130 +1,164 @@
+import { useEffect, useState } from 'react';
 import { Card } from './components/Card';
+import { Cart } from './components/Cart';
+import { getSneakers } from './services/shopApi';
+import styles from './App.module.scss';
+import { Header } from './components/Header';
+import { useCart } from './hooks/useCart';
 
 export function App() {
+  const [sneakers, setSneakers] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const {
+    cartItems,
+    total,
+    loadError: cartLoadError,
+    actionError,
+    addToCart,
+    removeFromCart,
+  } = useCart();
+
+  const toggleCart = () => {
+    setIsCartOpen(prev => !prev);
+  };
+
+  const onCartClose = () => {
+    setIsCartOpen(false);
+  };
+
+  const onChangeSearchInput = event => {
+    setSearchValue(event.target.value);
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadSneakers = async () => {
+      try {
+        const data = await getSneakers(controller.signal);
+
+        setSneakers(data);
+      } catch (error) {
+        if (controller.signal.aborted) return;
+
+        console.error('Ошибка загрузки товаров:', error);
+        setIsError(true);
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadSneakers();
+
+    return () => controller.abort();
+  }, []);
+
+  if (isError) {
+    return (
+      <div className={styles.statusScreen}>
+        <h2 className={styles.errorMessage}>Error</h2>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className={styles.statusScreen}>
+        <h2>Loading</h2>
+      </div>
+    );
+  }
+
+  const filteredSneakers = sneakers.filter(item =>
+    item.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
   return (
-    <div className="wrapper clear">
-      <div style={{ display: 'none' }} className="overlay">
-        <div className="drawer">
-          <div className="d-flex justify-between align-center mb-30">
-            <h2>Корзина</h2>
+    <div className={styles.wrapper}>
+      {(actionError || cartLoadError) && (
+        <p role="alert" className={styles.errorMessage}>
+          {actionError || cartLoadError}
+        </p>
+      )}
+
+      {isCartOpen && (
+        <Cart
+          onCartClose={onCartClose}
+          cartItems={cartItems}
+          removeFromCart={removeFromCart}
+          total={total}
+        />
+      )}
+
+      <Header toggleCart={toggleCart} total={total} />
+
+      <main className={styles.content}>
+        <div className={styles.catalogHeader}>
+          <h1 className={styles.catalogTitle}>
+            {searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}
+          </h1>
+
+          <div className={styles.searchBlock}>
             <img
-              src="/img/btn-remove.svg"
-              alt="remove"
-              width={32}
-              height={32}
-              className="removeBtn"
+              className={styles.searchIcon}
+              src="/img/search.svg"
+              alt=""
+              width={18}
+              height={18}
             />
+
+            <input
+              className={styles.searchInput}
+              type="text"
+              placeholder="Поиск..."
+              onChange={onChangeSearchInput}
+              value={searchValue}
+            />
+
+            {searchValue && (
+              <button
+                type="button"
+                className={styles.clearSearchButton}
+                onClick={() => setSearchValue('')}
+                aria-label="Очистить поиск"
+              >
+                <img
+                  className={styles.clearSearchIcon}
+                  src="/img/btn-remove.svg"
+                  alt=""
+                  width={32}
+                  height={32}
+                />
+              </button>
+            )}
           </div>
-          <div className="items">
-            <div className="cartItem d-flex justify-between align-center mb-20">
-              <div
-                className="cartItemImg"
-                style={{ backgroundImage: 'url(/img/sneakers/1.jpg)' }}
-              ></div>
-              <div className="mr-20 d-flex flex-column">
-                <h5 className="mb-10">Мужские Кроссовки Nike Blazer Mid Suede</h5>
-                <span className="font-bold">12 999 руб.</span>
-              </div>
-              <img
-                src="/img/btn-remove.svg"
-                alt="remove"
-                width={32}
-                height={32}
-                className="removeBtn"
+        </div>
+
+        <div className={styles.cards}>
+          {filteredSneakers.length > 0 ? (
+            filteredSneakers.map(item => (
+              <Card
+                key={item.id}
+                title={item.title}
+                price={item.price}
+                imageUrl={item.imageUrl}
+                id={item.id}
+                addToCart={addToCart}
               />
+            ))
+          ) : (
+            <div className={styles.emptyState}>
+              {searchValue ? 'Ничего не найдено' : 'Товаров пока нет'}
             </div>
-            <div className="cartItem d-flex justify-between align-center mb-20">
-              <div
-                className="cartItemImg"
-                style={{ backgroundImage: 'url(/img/sneakers/1.jpg)' }}
-              ></div>
-              <div className="mr-20 d-flex flex-column">
-                <h5 className="mb-10">Мужские Кроссовки Nike Blazer Mid Suede</h5>
-                <span className="font-bold">12 999 руб.</span>
-              </div>
-              <img
-                src="/img/btn-remove.svg"
-                alt="remove"
-                width={32}
-                height={32}
-                className="removeBtn"
-              />
-            </div>
-          </div>
-          <div className="cartTotalBlock">
-            <ul>
-              <li>
-                <span>Итого:</span>
-                <div></div>
-                <b>21 498 руб.</b>
-              </li>
-              <li>
-                <span>Налог 5%:</span>
-                <div></div>
-                <b>1 074 руб.</b>
-              </li>
-            </ul>
-
-            <button className="greenButton">
-              <span>Оформить заказ</span>
-              <img src="/img/arrow.svg" alt="arrow" width={11} height={11} />
-            </button>
-          </div>
+          )}
         </div>
-      </div>
-
-      <header className="d-flex justify-between align-center p-40">
-        <div className="d-flex align-center">
-          <img src="/img/logo.png" alt="logo" width={40} height={40} />
-          <div className="ml-10">
-            <h3 className="text-uppercase">React Sneakers</h3>
-            <p className="opacity-5">Магазин лучших кросовок</p>
-          </div>
-        </div>
-        <ul className="d-flex align-center">
-          <li className="mr-30 d-flex align-center">
-            <img src="/img/cart.svg" alt="cart" width={18} height={18} />
-            <span>1205 руб.</span>
-          </li>
-          <li>
-            <img src="/img/user.svg" alt="user" width={18} height={18} />
-          </li>
-        </ul>
-      </header>
-
-      <div className="content p-40">
-        <div className="d-flex align-center justify-between mb-40">
-          <h1>Все кросовки</h1>
-          <div className="search-block d-flex align-center">
-            <img src="/img/search.svg" alt="search" width={18} height={18} />
-            <input type="text" placeholder="Поиск..." />
-          </div>
-        </div>
-
-        <div className="d-flex flex-wrap">
-          <Card
-            title="Мужские Кроссовки Nike Blazer Mid Suede"
-            price="12 999"
-            imageUrl="/img/sneakers/1.jpg"
-            onPlus={() => {}}
-            isFavorite={false}
-          />
-          <Card
-            title="Мужские Кроссовки Nike Blazer Mid Suede"
-            price="12 999"
-            imageUrl="/img/sneakers/2.jpg"
-            onPlus={() => {}}
-            isFavorite={false}
-          />
-          <Card
-            title="Мужские Кроссовки Nike Blazer Mid Suede"
-            price="12 999"
-            imageUrl="/img/sneakers/3.jpg"
-            onPlus={() => {}}
-            isFavorite={false}
-          />
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

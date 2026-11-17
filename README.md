@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+<div align="center">
+  <h1>👟 React Sneakers</h1>
+  <p><strong>Небольшой интернет-магазин кроссовок на React</strong></p>
+  <p>
+    <img src="https://img.shields.io/badge/React-UI-61DAFB?logo=react&logoColor=20232A" alt="React" />
+    <img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=20232A" alt="JavaScript" />
+    <img src="https://img.shields.io/badge/SCSS-CSS%20Modules-CC6699?logo=sass&logoColor=white" alt="SCSS" />
+    <img src="https://img.shields.io/badge/Axios-API-671DDF" alt="Axios" />
+    <img src="https://img.shields.io/badge/MockAPI-backend-2F80ED" alt="MockAPI" />
+  </p>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## ✨ Возможности
 
-In the project directory, you can run:
+- **Каталог и поиск** — просмотр кроссовок и фильтрация по названию.
+- **Корзина** — добавление нескольких экземпляров одного товара и удаление каждого отдельно.
+- **Стоимость заказа** — автоматический подсчёт суммы и налога 5%.
+- **Избранное** — переключение состояния товара.
+- **Обратная связь** — анимация подтверждения добавления, состояния загрузки и ошибки.
 
-### `npm start`
+## 🚀 Запуск проекта
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Приложение откроется по адресу [http://localhost:3000](http://localhost:3000).
 
-### `npm test`
+| Команда | Назначение |
+| --- | --- |
+| `npm start` | Запуск в режиме разработки |
+| `npm run build` | Production-сборка |
+| `npm test` | Запуск тестов |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧩 Структура проекта
 
-### `npm run build`
+```text
+src/
+├── components/       # Header, Card, Cart, CartItem
+├── constants/        # Конфигурация API
+├── hooks/            # useCart — логика корзины
+├── services/         # Запросы к MockAPI
+├── App.js
+├── App.module.scss
+└── index.scss        # Глобальные стили
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Технологии и подходы
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React Hooks** — состояние и логика компонентов.
+- **Custom Hook `useCart`** — загрузка, добавление и удаление товаров, расчёт суммы.
+- **Axios + MockAPI** — получение каталога и хранение данных корзины.
+- **SCSS Modules** — изолированные стили компонентов.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🔌 API
 
-### `npm run eject`
+Используется MockAPI: `https://6afb0955730c1d152f32f8ad.mockapi.io/api/v1`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Метод | Endpoint | Действие |
+| --- | --- | --- |
+| `GET` | `/items` | Получить каталог |
+| `GET` | `/cart` | Получить корзину |
+| `POST` | `/cart` | Добавить запись в корзину |
+| `DELETE` | `/cart/:id` | Удалить запись из корзины |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Каждая запись корзины имеет собственный `id`, поэтому одинаковые товары можно добавлять и удалять независимо.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+> **Примечание:** избранное хранится в состоянии интерфейса. Кнопка оформления заказа пока не выполняет реальную покупку.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<div align="center">
+  <sub>Учебный проект для практики React, работы с API и организации компонентных стилей.</sub>
+</div>

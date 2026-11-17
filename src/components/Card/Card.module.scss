@@ -1,0 +1,86 @@
+.card {
+  border: 1px solid #f3f3f3;
+  padding: 30px;
+  width: 220px;
+  border-radius: 40px;
+  position: relative;
+
+  transition:
+    box-shadow 0.2s ease-in-out,
+    transform 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.06);
+    transform: translateY(-5px);
+  }
+}
+
+.favoriteButton,
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #9dd558;
+    outline-offset: 3px;
+    border-radius: 50%;
+  }
+}
+
+.favoriteButton {
+  position: absolute;
+  top: 20px;
+}
+
+.productTitle {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceLabel {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.priceValue {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.addButton {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.addIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+}
