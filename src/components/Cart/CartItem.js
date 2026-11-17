@@ -1,19 +1,23 @@
-export function CartItem({ title, price, imageUrl, id, onRemoveItemCart }) {
+import styles from './CartItem.module.scss';
+
+export function CartItem({ title, price, imageUrl, id, removeFromCart }) {
   return (
-    <div className="cartItem d-flex justify-between align-center mb-20">
-      <div className="cartItemImg" style={{ backgroundImage: `url(${imageUrl})` }}></div>
-      <div className="mr-20 d-flex flex-column">
-        <h5 className="mb-10">{title}</h5>
-        <span className="font-bold">{price} руб.</span>
+    <div className={styles.item}>
+      <img className={styles.image} src={imageUrl} alt={title} width={70} height={70} />
+
+      <div className={styles.details}>
+        <h5 className={styles.title}>{title}</h5>
+        <span className={styles.price}>{price} руб.</span>
       </div>
-      <img
-        src="/img/btn-remove.svg"
-        alt="remove"
-        width={32}
-        height={32}
-        className="removeBtn"
-        onClick={() => onRemoveItemCart(id)}
-      />
+
+      <button
+        type="button"
+        className={styles.removeButton}
+        onClick={() => removeFromCart(id)}
+        aria-label={`Удалить ${title} из корзины`}
+      >
+        <img src="/img/btn-remove.svg" alt="" width={32} height={32} />
+      </button>
     </div>
   );
 }

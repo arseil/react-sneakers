@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', system-ui;
@@ -6,176 +12,9 @@ body {
   background-color: #e7f6ff;
 }
 
-* {
-  font-family: 'Inter', system-ui;
-}
-
-.wrapper {
-  background-color: #fff;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
-  border-radius: 20px;
-  max-width: 1080px;
-  margin: 50px auto;
-}
-
-header {
-  border-bottom: 1px solid #eaeaea;
-  h3,
-  p {
-    margin: 0;
-  }
-}
-
-.content {
-  h1 {
-    margin: 0;
-  }
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.search-block {
-  border: 1px solid #f3f3f3;
-  border-radius: 10px;
-  padding: 0 15px;
-  position: relative;
-
-  input {
-    border: none;
-    padding: 13px;
-    font-size: 16px;
-    width: 200px;
-  }
-}
-
-.drawer {
-  position: absolute;
-  right: 0;
-  width: 420px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-
-  h2 {
-    margin: 0;
-  }
-}
-
-.items {
-  flex: 1;
-  overflow: auto;
-  margin-bottom: 40px;
-}
-
-.cartItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  border: 1px solid #f3f3f3;
-  border-radius: 20px;
-  padding: 20px;
-
-  .cartItemImg {
-    width: 70px;
-    height: 70px;
-    background-size: contain;
-    background-position: 0 10px;
-    background-repeat: no-repeat;
-    margin-right: 20px;
-  }
-
-  h5 {
-    font-size: 16px;
-    margin: 0;
-  }
-
-  span {
-    font-size: 14px;
-  }
-}
-
-.removeBtn {
-  opacity: 0.5;
-  cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-.overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-.cartTotalBlock {
-  ul {
-    margin-bottom: 30px !important;
-    li {
-      display: flex;
-      align-items: flex-end;
-      margin-bottom: 20px;
-      div {
-        flex: 1;
-        height: 1px;
-        border-bottom: 1px dashed #676767;
-        margin: 0 7px;
-        position: relative;
-        top: -4px;
-      }
-    }
-  }
-  .greenButton {
-    position: relative;
-    &:hover {
-      img {
-        transform: translateX(5px);
-      }
-    }
-    img {
-      position: absolute;
-      right: 30px;
-      top: 20px;
-      transition: transform 0.15s ease-in-out;
-    }
-  }
-}
-
-.greenButton {
-  width: 100%;
-  height: 50px;
-  background: #9dd558;
-  border-radius: 18px;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.2s ease-in-out;
-  &:hover {
-    background-color: #86c442;
-  }
-  &:active {
-    background-color: #72a738;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:disabled {
-    background-color: #b8b8b8;
-    cursor: not-allowed;
-  }
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }

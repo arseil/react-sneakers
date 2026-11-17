@@ -1,0 +1,125 @@
+.wrapper {
+  max-width: 1080px;
+  margin: 50px auto;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+}
+
+.content {
+  padding: 40px;
+}
+
+.catalogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.catalogTitle {
+  margin: 0;
+}
+
+.searchBlock {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 1px solid #f3f3f3;
+  border-radius: 10px;
+  padding: 0 15px;
+}
+
+.searchIcon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  width: 200px;
+  padding: 13px;
+  border: none;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.clearSearchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.clearSearchIcon {
+  display: block;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+}
+
+.statusScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.errorMessage {
+  color: red;
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 24px;
+  }
+
+  .catalogHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .searchBlock {
+    width: 100%;
+  }
+
+  .searchInput {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .cards {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .content {
+    padding: 20px 16px;
+  }
+}
