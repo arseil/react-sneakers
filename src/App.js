@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from './components/Card';
 import { Cart } from './components/Cart';
 import { getSneakers } from './services/shopApi';
@@ -12,6 +12,18 @@ export function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
+  const [errorToast, setErrorToast] = useState({
+    message: '',
+    id: 0,
+  });
+
+  const errorIdRef = useRef(0);
+
+  const previousErrorsRef = useRef({
+    actionError: '',
+    cartLoadError: '',
+  });
 
   const {
     cartItems,
@@ -59,10 +71,43 @@ export function App() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const hasNewActionError = actionError && actionError !== previousErrorsRef.current.actionError;
+
+    const hasNewCartError =
+      cartLoadError && cartLoadError !== previousErrorsRef.current.cartLoadError;
+
+    previousErrorsRef.current = {
+      actionError,
+      cartLoadError,
+    };
+
+    const message = hasNewActionError ? actionError : hasNewCartError ? cartLoadError : '';
+
+    if (!message) return;
+
+    setErrorToast({
+      message,
+      id: ++errorIdRef.current,
+    });
+  }, [actionError, cartLoadError]);
+
+  useEffect(() => {
+    if (!errorToast.message) return;
+
+    const toastId = errorToast.id;
+
+    const timer = setTimeout(() => {
+      setErrorToast(current => (current.id === toastId ? { ...current, message: '' } : current));
+    }, 7000);
+
+    return () => clearTimeout(timer);
+  }, [errorToast]);
+
   if (isError) {
     return (
       <div className={styles.statusScreen}>
-        <h2 className={styles.errorMessage}>Error</h2>
+        <h2 className={styles.statusError}>Error</h2>
       </div>
     );
   }
@@ -80,86 +125,88 @@ export function App() {
   );
 
   return (
-    <div className={styles.wrapper}>
-      {(actionError || cartLoadError) && (
-        <p role="alert" className={styles.errorMessage}>
-          {actionError || cartLoadError}
-        </p>
+    <>
+      {errorToast.message && (
+        <div key={errorToast.id} className={styles.errorToast} role="alert">
+          {errorToast.message}
+        </div>
       )}
 
-      {isCartOpen && (
-        <Cart
-          onCartClose={onCartClose}
-          cartItems={cartItems}
-          removeFromCart={removeFromCart}
-          total={total}
-        />
-      )}
+      <div className={styles.wrapper}>
+        {isCartOpen && (
+          <Cart
+            onCartClose={onCartClose}
+            cartItems={cartItems}
+            removeFromCart={removeFromCart}
+            total={total}
+          />
+        )}
 
-      <Header toggleCart={toggleCart} total={total} />
+        <Header toggleCart={toggleCart} total={total} />
 
-      <main className={styles.content}>
-        <div className={styles.catalogHeader}>
-          <h1 className={styles.catalogTitle}>
-            {searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}
-          </h1>
+        <main className={styles.content}>
+          <div className={styles.catalogHeader}>
+            <h1 className={styles.catalogTitle}>
+              {searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}
+            </h1>
 
-          <div className={styles.searchBlock}>
-            <img
-              className={styles.searchIcon}
-              src="/img/search.svg"
-              alt=""
-              width={18}
-              height={18}
-            />
+            <div className={styles.searchBlock}>
+              <img
+                className={styles.searchIcon}
+                src="/img/search.svg"
+                alt=""
+                width={18}
+                height={18}
+              />
 
-            <input
-              className={styles.searchInput}
-              type="text"
-              placeholder="Поиск..."
-              onChange={onChangeSearchInput}
-              value={searchValue}
-            />
+              <input
+                className={styles.searchInput}
+                type="text"
+                placeholder="Поиск..."
+                onChange={onChangeSearchInput}
+                value={searchValue}
+              />
 
-            {searchValue && (
-              <button
-                type="button"
-                className={styles.clearSearchButton}
-                onClick={() => setSearchValue('')}
-                aria-label="Очистить поиск"
-              >
-                <img
-                  className={styles.clearSearchIcon}
-                  src="/img/btn-remove.svg"
-                  alt=""
-                  width={32}
-                  height={32}
+              {searchValue && (
+                <button
+                  type="button"
+                  className={styles.clearSearchButton}
+                  onClick={() => setSearchValue('')}
+                  aria-label="Очистить поиск"
+                >
+                  <img
+                    className={styles.clearSearchIcon}
+                    src="/img/btn-remove.svg"
+                    alt=""
+                    width={32}
+                    height={32}
+                  />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.cards}>
+            {filteredSneakers.length > 0 ? (
+              filteredSneakers.map(item => (
+                <Card
+                  key={item.id}
+                  title={item.title}
+                  price={item.price}
+                  imageUrl={item.imageUrl}
+                  id={item.id}
+                  addToCart={addToCart}
                 />
-              </button>
+              ))
+            ) : (
+              <div className={styles.emptyState}>
+                {searchValue ? 'Ничего не найдено' : 'Товаров пока нет'}
+              </div>
             )}
           </div>
-        </div>
-
-        <div className={styles.cards}>
-          {filteredSneakers.length > 0 ? (
-            filteredSneakers.map(item => (
-              <Card
-                key={item.id}
-                title={item.title}
-                price={item.price}
-                imageUrl={item.imageUrl}
-                id={item.id}
-                addToCart={addToCart}
-              />
-            ))
-          ) : (
-            <div className={styles.emptyState}>
-              {searchValue ? 'Ничего не найдено' : 'Товаров пока нет'}
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
 
