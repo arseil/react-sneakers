@@ -1,0 +1,53 @@
+.errorToast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 12px 20px;
+
+  color: #fff;
+  text-align: center;
+  overflow-wrap: anywhere;
+
+  background-color: rgba(220, 38, 38, 0.92);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+  transform: translateX(-50%);
+  animation: errorToastAnimation 7s ease-in-out both;
+}
+
+@keyframes errorToastAnimation {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+
+  8% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .errorToast {
+    animation: none;
+  }
+}
