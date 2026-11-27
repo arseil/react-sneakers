@@ -8,6 +8,7 @@ import { ErrorToast } from './components/ErrorToast/ErrorToast';
 import { useCart } from './hooks/useCart';
 import { useSneakers } from './hooks/useSneakers';
 import { useErrorToast } from './hooks/useErrorToast';
+import { useFavorites } from './hooks/useFavorites';
 
 import styles from './App.module.scss';
 
@@ -25,7 +26,19 @@ export function App() {
     removeFromCart,
   } = useCart();
 
-  const errorToast = useErrorToast(actionError, cartLoadError);
+  const {
+    isFavorite,
+    toggleFavorite,
+    loadError: favoritesLoadError,
+    actionError: favoritesActionError,
+  } = useFavorites();
+
+  const errorToast = useErrorToast(
+    actionError,
+    cartLoadError,
+    favoritesActionError,
+    favoritesLoadError,
+  );
 
   const toggleCart = () => {
     setIsCartOpen(prev => !prev);
@@ -67,7 +80,12 @@ export function App() {
 
         <Header toggleCart={toggleCart} total={total} />
 
-        <Catalog sneakers={sneakers} addToCart={addToCart} />
+        <Catalog
+          sneakers={sneakers}
+          addToCart={addToCart}
+          isFavorite={isFavorite}
+          toggleFavorite={toggleFavorite}
+        />
       </div>
     </>
   );

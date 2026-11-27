@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './Card.module.scss';
 
-export function Card({ title, price, imageUrl, id, addToCart }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+export function Card({ title, price, imageUrl, id, addToCart, isFavorite, toggleFavorite }) {
   const [isAdded, setIsAdded] = useState(false);
 
   const timerRef = useRef(null);
 
   const onFavorite = () => {
-    setIsFavorite(prev => !prev);
+    toggleFavorite(id);
   };
 
   const onPlus = async () => {
