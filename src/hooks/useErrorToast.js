@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-export function useErrorToast(actionError, cartLoadError) {
+export function useErrorToast(
+  actionError,
+  cartLoadError,
+  favoritesActionError = '',
+  favoritesLoadError = '',
+) {
   const [toast, setToast] = useState({
     message: '',
     id: 0,
@@ -11,20 +16,39 @@ export function useErrorToast(actionError, cartLoadError) {
   const previousErrorsRef = useRef({
     actionError: '',
     cartLoadError: '',
+    favoritesActionError: '',
+    favoritesLoadError: '',
   });
 
   useEffect(() => {
-    const hasNewActionError = actionError && actionError !== previousErrorsRef.current.actionError;
+    const previous = previousErrorsRef.current;
 
-    const hasNewCartError =
-      cartLoadError && cartLoadError !== previousErrorsRef.current.cartLoadError;
+    const hasNewActionError = actionError && actionError !== previous.actionError;
+
+    const hasNewCartError = cartLoadError && cartLoadError !== previous.cartLoadError;
+
+    const hasNewFavoritesActionError =
+      favoritesActionError && favoritesActionError !== previous.favoritesActionError;
+
+    const hasNewFavoritesLoadError =
+      favoritesLoadError && favoritesLoadError !== previous.favoritesLoadError;
 
     previousErrorsRef.current = {
       actionError,
       cartLoadError,
+      favoritesActionError,
+      favoritesLoadError,
     };
 
-    const message = hasNewActionError ? actionError : hasNewCartError ? cartLoadError : '';
+    const message = hasNewActionError
+      ? actionError
+      : hasNewCartError
+        ? cartLoadError
+        : hasNewFavoritesActionError
+          ? favoritesActionError
+          : hasNewFavoritesLoadError
+            ? favoritesLoadError
+            : '';
 
     if (!message) return;
 
@@ -32,7 +56,7 @@ export function useErrorToast(actionError, cartLoadError) {
       message,
       id: ++errorIdRef.current,
     });
-  }, [actionError, cartLoadError]);
+  }, [actionError, cartLoadError, favoritesActionError, favoritesLoadError]);
 
   useEffect(() => {
     if (!toast.message) return;

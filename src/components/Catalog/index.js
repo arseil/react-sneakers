@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card } from '../Card';
 import styles from './Catalog.module.scss';
 
-export function Catalog({ sneakers, addToCart }) {
+export function Catalog({ sneakers, addToCart, isFavorite, toggleFavorite }) {
   const [searchValue, setSearchValue] = useState('');
 
   const filteredSneakers = sneakers.filter(item =>
@@ -60,6 +60,8 @@ export function Catalog({ sneakers, addToCart }) {
               imageUrl={item.imageUrl}
               id={item.id}
               addToCart={addToCart}
+              isFavorite={isFavorite(item.id)}
+              toggleFavorite={toggleFavorite}
             />
           ))
         ) : (
